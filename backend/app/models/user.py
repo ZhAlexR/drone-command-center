@@ -1,7 +1,5 @@
-from sqlalchemy import Integer, String, ForeignKey
-from sqlalchemy.orm import Mapped, relationship
-from sqlalchemy.testing.schema import mapped_column
-
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import Mapped, relationship, mapped_column
 from backend.app.models.base import BaseModel
 
 
@@ -26,7 +24,7 @@ class User(BaseModel):
     is_active: Mapped[bool] = mapped_column(default=True)
     role_id: Mapped[int] = mapped_column(ForeignKey('roles.id'))
 
-    role: Mapped["Role"] = relationship(back_populates="user")
+    role: Mapped["Role"] = relationship(back_populates="users")
 
     def __repr__(self) -> str:
         return f"<User(username={self.email})>"
