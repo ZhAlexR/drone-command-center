@@ -2,7 +2,7 @@ from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.testing.schema import mapped_column
 
-from backend.app.database import BaseModel
+from backend.app.models.base import BaseModel
 
 
 class Role(BaseModel):
