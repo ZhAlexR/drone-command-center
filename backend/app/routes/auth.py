@@ -6,7 +6,7 @@ from starlette import status
 
 from backend.app.crud.user import create_user, get_user_by_email, create_role, get_roles
 from backend.app.dependency import get_session
-from backend.app.shemas.token import Token
+from backend.app.shemas.token_schema import Token
 from backend.app.shemas.user_schema import UserCreateSchema, RoleSchema, UserLoginSchema
 from backend.app.utils.auth import verify_password, create_access_token
 
