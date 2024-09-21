@@ -12,12 +12,11 @@ def create_access_token(data: dict):
     data_to_encode = data.copy()
     expire = datetime.now(UTC) + timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
     data_to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(
+    return jwt.encode(
         payload=data_to_encode,
         key=settings.JWT_SECRET_KEY,
         algorithm=settings.JWT_ALGORITHM,
     )
-    return Token(token=encoded_jwt)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:

@@ -2,6 +2,7 @@ from typing import Type, Sequence
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from backend.app.models.user import User, Role
 from backend.app.utils.auth import get_password_hash
@@ -31,6 +32,10 @@ async def create_user(user: user_schema.UserCreateSchema, session: AsyncSession)
     await session.refresh(new_user)
     return new_user
 
+
 async def get_user_by_email(session: AsyncSession, email: str) -> Type[User]:
-    user = await session.execute(select(User).where(User.email == email))
+    user = await session.execute(
+        select(User)
+        .options(selectinload(User.role)).where(User.email == email)
+    )
     return user.scalar()
