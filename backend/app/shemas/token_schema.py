@@ -2,5 +2,11 @@ from pydantic import BaseModel
 
 
 class Token(BaseModel):
-    token: str
-    token_type: str = 'Bearer'
+    access_token: str
+    token_type: str = "Bearer"
+
+
+class GetCurrentUserTokenSchema(BaseModel):
+    email: str
+    role: str
+    expired_at: int

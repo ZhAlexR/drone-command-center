@@ -1,6 +1,7 @@
 from typing import Type
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
@@ -29,8 +30,9 @@ async def register(user_data: UserCreateSchema, session: AsyncSession = Depends(
 
 
 @auth_router.post("/login", response_model=Token)
-async def login(user_data: UserLoginSchema, session: AsyncSession = Depends(get_session)) -> Type[Token]:
-    user = await get_user_by_email(email=user_data.email, session=session)
+async def login(user_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_session)) -> dict:
+    user = await get_user_by_email(email=user_data.username, session=session)
     if not (user and verify_password(user_data.password, user.hashed_password)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid credentials")
-    return create_access_token(data={"sub": user.email})
+    access_token = create_access_token(data={"sub": user.email, "role": user.role.name})
+    return {"access_token": access_token, "token_type": "Bearer"}
